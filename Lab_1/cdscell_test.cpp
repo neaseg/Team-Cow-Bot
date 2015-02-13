@@ -10,7 +10,6 @@
 #include <FEHBUZZER.h>
 #include <FEHMotor.h>
 #include <FEHServo.h>
-#include <FEHWONKA.h>
 
 
 int main(void)
@@ -18,6 +17,8 @@ int main(void)
     /*Initialize all inputs and outpus, as well as motors.*/
     ButtonBoard buttons( FEHIO::Bank3 );
     AnalogInputPin cdscell(FEHIO::P1_0);
+    FEHMotor motor0 (FEHMotor::Motor0);
+    DigitalInputPin microSwitch (FEHIO::P0_0);
     /*initialize sensor values*/
     float cdsvalue;
     
