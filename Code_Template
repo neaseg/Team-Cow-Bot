@@ -1,0 +1,25 @@
+/*Written By: */
+/*Date Created: */
+/*Revision: */
+/*Date Revised: */
+/*Program Function: */
+
+#include <FEHLCD.h>
+#include <FEHIO.h>
+#include <FEHUtility.h>
+#include <FEHBUZZER.h>
+#include <FEHMotor.h>
+#include <FEHServo.h>
+#include <FEHWONKA.h>
+
+
+int main(void)
+{
+    ButtonBoard buttons( FEHIO::Bank3 );
+
+    LCD.Clear( FEHLCD::Black );
+    LCD.SetFontColor( FEHLCD::White );
+
+  
+    return 0;
+}
