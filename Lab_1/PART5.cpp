@@ -15,6 +15,6 @@ int main(void)
  // actual values need to be checked
  servo.SetMin(998);
  servo.SetMax(1852);
- 
+ servo.
  
 }
