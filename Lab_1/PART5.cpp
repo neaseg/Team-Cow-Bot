@@ -4,7 +4,7 @@
 // declare servo arm
 
 FEHServo servo(FEHServo::Servo7);
-
+AnalogInputPin cdscell(FEHIO::P1_0);
 int main(void)
 
 {
@@ -15,6 +15,9 @@ int main(void)
  // actual values need to be checked
  servo.SetMin(998);
  servo.SetMax(1852);
- servo.
  
+ while (1)
+ {
+ servo.SetAngle(cdscell.Value() * (180/3.3));
+ }
 }
