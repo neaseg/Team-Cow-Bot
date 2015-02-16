@@ -1,0 +1,18 @@
+Changelog
+
+Format
+
+Contributor: xx
+Date: xx.xx.xxxx
+*filechanged.cpp: changes made
+more changes if not enough room on first line
+
+*filechanged2.cpp: changes made to second file edited
+other changes made to same file
+
+
+See https://www.gnu.org/prep/standards/html_node/Style-of-Change-Logs.html for further details
+
+Contributor: Garrett Nease
+Date: 02.16.2015
+Cowship.cpp: file created and formatted
