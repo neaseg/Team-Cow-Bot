@@ -15,4 +15,4 @@ See https://www.gnu.org/prep/standards/html_node/Style-of-Change-Logs.html for f
 
 Contributor: Garrett Nease
 Date: 02.16.2015
-Cowship.cpp: file created and formatted
+Cowship0,00.cpp: file created and formatted. Initial version of the main file to run the course.
