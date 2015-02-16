@@ -12,4 +12,9 @@ int main(void)
   // calibrate servo
  servo.Calibrate();
  
+ // actual values need to be checked
+ servo.SetMin(998);
+ servo.SetMax(1852);
+ 
+ 
 }
