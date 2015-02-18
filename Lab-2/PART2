@@ -1,7 +1,5 @@
-#include <FEHLCD.h>
-#include <FEHIO.h>
-#include <FEHUtility.h>
-#include <FEHRPS.h> //Must include this library
+/* Edited By Maxwell Powell */
+/* 02.18.2015 */
 
 #include <FEHLCD.h>
 #include <FEHIO.h>
@@ -9,7 +7,7 @@
 #include <FEHRPS.h> //Must include this library
 
 FEHMotor right_motor(FEHMotor::Motor0);
-FEHMotor leftt_motor(FEHMotor::Motor1);
+FEHMotor left_motor(FEHMotor::Motor1);
 
 void check_x_plus(float x_coordinate) //use RPS to check x location while robot is facing the +x direction
 {
@@ -23,6 +21,8 @@ void check_x_plus(float x_coordinate) //use RPS to check x location while robot 
             right_motor.SetPercent(100);
             left_motor.SetPercent(100);
             Sleep(100);
+            right_motor.SetPercent(0);
+            left_motor.SetPercent(0);
             
         }
         else if(RPS.X() < x_coordinate)
@@ -31,6 +31,8 @@ void check_x_plus(float x_coordinate) //use RPS to check x location while robot 
             right_motor.SetPercent(-100);
             left_motor.SetPercent(-100);
             Sleep(100);
+            right_motor.SEtPercent(0);
+            left_motor.SEtPercent(0);
         }
     }
 }
@@ -46,6 +48,8 @@ void check_y_minus(float y_coordinate)//use RPS to check y location while robot 
                 right_motor.SetPercent(100);
                 left_motor.SetPercent(100);
                 Sleep(100);
+                right_motor.SetPercent(0);
+                left_motor.SetPercent(0);
             }
             else if(RPS.Y() < y_coordinate)
             {
@@ -53,6 +57,8 @@ void check_y_minus(float y_coordinate)//use RPS to check y location while robot 
                 right_motor.SetPercent(-100);
                 left_motor.SetPercent(-100);
                 Sleep(100);
+                right_motor.SetPercent(0);
+                left_motor.SetPercent(0);
             }
         }
 }
@@ -68,6 +74,8 @@ void check_y_plus(float y_coordinate) //use RPS to check y location while robot 
             right_motor.SetPercent(100);
             left_motor.SetPercent(100);
             Sleep(100);
+            right_motor.SetPercent(0);
+            left_motor.SetPercent(0);
         }
         else if(RPS.Y() < y_coordinate)
         {
@@ -75,6 +83,8 @@ void check_y_plus(float y_coordinate) //use RPS to check y location while robot 
             right_motor.SetPercent(-100);
             left_motor.SetPercent(-100);
             Sleep(100);
+            right_motor.SetPercent(0);
+            left_motor.SetPercent(0);
         }
     }
 }
@@ -84,6 +94,29 @@ void check_heading(float heading) //using RPS
     //you will need to fill out this one yourself and take into account
     //the edge conditions (when you want the robot to go to 0 degrees
     //or close to 0 degrees and you are at an angle like 357 degrees)
+    
+    //check whether the robot is within an acceptable range
+    while(RPS.Heading() < heading - 1 || RPS.Heading() > heading + 1)
+    {
+        if(RPS.Y() > y_coordinate)
+        {
+            //pulse the motors for a short duration in the correct direction
+            right_motor.SetPercent(100);
+            left_motor.SetPercent(100);
+            Sleep(100);
+            right_motor.SetPercent(0);
+            left_motor.SetPercent(0);
+        }
+        else if(RPS.Y() < y_coordinate)
+        {
+            //pulse the motors for a short duration in the correct direction
+            right_motor.SetPercent(-100);
+            left_motor.SetPercent(-100);
+            Sleep(100);
+            right_motor.SetPercent(0);
+            left_motor.SetPercent(0);
+        }
+    }
 }
 
 int main()
