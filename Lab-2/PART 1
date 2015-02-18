@@ -45,7 +45,7 @@ void turn_right(int percent, int counts) //using encoders
  //keep running motors
  //<ADD CODE HERE>
 
- while ((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts)
+ while ((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
 
  //Turn off motors
  right_motor.Stop();
@@ -68,7 +68,7 @@ void turn_left(int percent, int counts) //using encoders
  //keep running motors
  //<ADD CODE HERE>
 
- while ((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts)
+ while ((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
 
  //Turn off motors
  right_motor.Stop();
@@ -78,8 +78,11 @@ void turn_left(int percent, int counts) //using encoders
 int main(void)
 {
  int motor_percent = 50; //Input power level here
- int expected_counts = 127.32; //Input theoretical counts here
+ int expected_counts = 297.09; //Input theoretical counts here (14 inches)
  //Initialize the screen (GO BUCKS!)
+
+ int expected_turn_counts = 90; //Input theoretical counts here
+
  LCD.Clear( FEHLCD::Scarlet );
  LCD.SetFontColor( FEHLCD::Gray );
 
@@ -91,10 +94,10 @@ int main(void)
  move_forward(motor_percent, expected_counts); //see function
  Sleep(2.0); //Wait for counts to stabilize
 
- turn_right(motor_percent, expected_counts);
+ turn_right(motor_percent, expected_turn_counts);
  Sleep(2.0); //Wait for counts to stabilize
 
- turn_left(motor_percent, expected_counts);
+ turn_left(motor_percent, expected_turn_counts);
  Sleep(2.0); //Wait for counts to stabilize
 
  //Print out data
