@@ -38,8 +38,8 @@ void turn_right(int percent, int counts) //using encoders
  //hint: set right motor forward, left motor backward
  //<ADD CODE HERE>
 
- right_motor.SetPercent(50);
- left_motor.SetPercent(-50);
+ right_motor.SetPercent(percent);
+ left_motor.SetPercent(-1 *percent);
 
  //While the average of the left and right encoder are less than counts,
  //keep running motors
@@ -61,8 +61,8 @@ void turn_left(int percent, int counts) //using encoders
  //hint: set right motor forward, left motor backward
  //<ADD CODE HERE>
 
- right_motor.SetPercent(-50);
- left_motor.SetPercent(50);
+ right_motor.SetPercent(-1 * percent);
+ left_motor.SetPercent(percent);
 
  //While the average of the left and right encoder are less than counts,
  //keep running motors
