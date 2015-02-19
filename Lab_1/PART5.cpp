@@ -1,3 +1,9 @@
+/*Written By: Krishna Ganesan*/
+/*Date Created: 2/13/15*/
+/*Revision: 0*/
+/*Date Revised: 2/15/15*/
+/*Program Function: Changes the position of the servo based on the cds cell value.*/
+
 #include <FEHUtility.h>
 #include <FEHServo.h>
 
