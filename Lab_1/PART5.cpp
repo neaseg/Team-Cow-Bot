@@ -23,7 +23,7 @@ int main(void)
  servo.SetMin(998);
  servo.SetMax(1852);
  
- //while loop that runs indefinately
+ //while loop that runs indefinitely
  while (1)
  {
    //Changes the angle of the servo based on the value of the cds cell
