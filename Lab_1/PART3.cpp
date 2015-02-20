@@ -9,12 +9,16 @@
 #include <FEHUtility.h>
 #include <FEHIO.h>
 
+//Declares motor and microswitch
 FEHMotor motor0 (FEHMotor::Motor0);
 DigitalInputPin microSwitch (FEHIO::P0_0);
 
 int main(void)
 {
+    //Continous while loop
     while(1){
+        
+        //Sets motor to 100 when switch is not pressed, 0 when pressed
         if(microSwitch.Value()){
             motor0.SetPercent(100);
         } else {
