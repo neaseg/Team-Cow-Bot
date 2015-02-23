@@ -247,34 +247,6 @@ int main(void)
 
 
 
- /* PART 1
- move_forward(motor_percent, expected_counts_14); //see function
- Sleep(1.0); //Wait for counts to stabilize
 
-
- turn_left(turning_motor_percent, expected_turn_counts);
- Sleep(1.0); //Wait for counts to stabilize
-
- move_forward(motor_percent, expected_counts_10);
- Sleep(1.0);
-
- turn_left(turning_motor_percent, expected_turn_counts);
- Sleep(1.0); //Wait for counts to stabilize
-
- move_forward(motor_percent, expected_counts_4);
- Sleep(1.0);
-*/
-
-/*
- //Print out data
- LCD.Write("Theoretical Counts: ");
- LCD.WriteLine(expected_counts);
- LCD.Write("Motor Percent: ");
- LCD.WriteLine(motor_percent);
- LCD.Write("Actual LE Counts: ");
- LCD.WriteLine(right_encoder.Counts());
- LCD.Write("Actual RE Counts: ");
- LCD.WriteLine(left_encoder.Counts());
-*/
  return 0;
 }
