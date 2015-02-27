@@ -73,10 +73,8 @@ int main(){
     //else error statement
     else {
       LCD.Write("Error.\n")
-    }
+    }//end error
     
+  }//end while
    
-}
-
-
-
+}//end loop
