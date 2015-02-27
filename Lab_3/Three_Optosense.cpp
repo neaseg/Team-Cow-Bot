@@ -1,5 +1,7 @@
 //MAXWELL POWELL
 //2.23.15
+//Rev 1: Garrett Nease
+//2.27.15
 
 //THREE OPTOSENSOR CODE
 //DEFINE STATES
@@ -14,8 +16,8 @@
 
 //DECLARES OPTOSENSORS
 AnalogInputPin leftOpto(FEHIO::P1_0);
-AnalogInputPin middleOpto(FEHIO::P1_0);
-AnalogInputPin rightOpto(FEHIO::P1_0);
+AnalogInputPin middleOpto(FEHIO::P1_1);
+AnalogInputPin rightOpto(FEHIO::P1_2);
 
 //DECLARES MOTORS
 FEHMotor rightMotor (FEHMotor::Motor0);
@@ -53,7 +55,8 @@ int main(){
       
       //WRITES STATE TO SCREEN
       LCD.Clear();
-      LCD.Write(state);
+      LCD.Write(state\n);
+      LCD.Write(leftValue\n);
       
       //ACTS BASED ON STATE
       switch(state){
