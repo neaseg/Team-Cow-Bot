@@ -10,7 +10,7 @@
 #define MIDDLE_ON_LINE  2
 #define RIGHT_ON_LINE  3
 #define RIGHT_TWO_ON_LINE  4
-#define THRESHOLD  2
+#define THRESHOLD  2.35
 #define FULL_POWER 50
 #define HALF_POWER 25
 
