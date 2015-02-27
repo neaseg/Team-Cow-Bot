@@ -9,12 +9,14 @@
 //DEFINE STATES
 #define LEFT_ON_LINE  0
 #define LEFT_TWO_ON_LINE  1
-#define MIDDLE_ON_LINE  2
+#define ON_LINE  2
 #define RIGHT_ON_LINE  3
 #define RIGHT_TWO_ON_LINE  4
 #define THRESHOLD  2
 #define FULL_POWER 50
 #define HALF_POWER 25
+#define ON 2.35
+#define OFF 2.8
 
 //DECLARES OPTOSENSORS
 AnalogInputPin leftOpto(FEHIO::P1_0);
@@ -27,77 +29,53 @@ FEHMotor leftMotor (FEHMotor::Motor1);
 
 
 int main(){
-//SETS INITIAL STATE & DECLARES VARIABLES FOR SENSOR VALUES
-  int state = MIDDLE_ON_LINE;
-  float leftValue, middleValue, rightValue;
+  float l, c, r;
+  int prev;
 
   //INFINITE LINE FOLLOWING LOOP
   while(true){
 
-    //SLEEP
-    Sleep(100);
-
     //GETS OPTOSENSOR VALUES
-    leftValue = leftOpto.Value();
-    middleValue = middleOpto.Value();
-    rightValue = rightOpto.Value();
-
-    //SETS ROBOT STATE
-    if(leftValue > THRESHOLD && middleValue < THRESHOLD && rightValue < THRESHOLD)){
-      state = LEFT_ON_LINE;
-      } else if(leftValue > THRESHOLD && middleValue > THRESHOLD && rightValue < THRESHOLD){
-      state = LEFT_TWO_ON_LINE;
-      } else if(leftValue < THRESHOLD && middleValue > THRESHOLD && rightValue < THRESHOLD){
-      state = MIDDLE_ON_LINE;
-      } else if(leftValue < THRESHOLD && middleValue < THRESHOLD && rightValue > THRESHOLD){
-      state = RIGHT_ON_LINE;
-      } else if(leftValue < THRESHOLD && middleValue > THRESHOLD && rightValue > THRESHOLD){
-      state = RIGHT_TWO_ON_LINE;
-      }
-
-
-      //WRITES STATE TO SCREEN
-      LCD.Clear();
-      LCD.Write(state);
-      LCD.Write(leftValue);
-
-      //ACTS BASED ON STATE
-      switch(state){
-
-        //TURNS LEFT IF ONLY LEFT IS ON LINE
-        case LEFT_ON_LINE;
-          rightMotor.SetPercent(FULL_POWER);
-          leftMotor.SetPercent(HALF_POWER);
-          break;
-
-        //TURNS LEFT IF ONLY LEFT TWO ARE ON ON LINE
-        case LEFT_TWO_ON_LINE;
-          rightMotor.SetPercent(FULL_POWER);
-          leftMotor.SetPercent(HALF_POWER);
-          break;
-
-        //NO TURN IF ONLY MIDDLE IS ON LINE
-        case MIDDLE_ON_LINE;
-          rightMotor.SetPercent(FULL_POWER);
-          leftMotor.SetPercent(FULL_POWER);
-          break;
-
-        //TURNS RIGHT IF ONLY RIGHT IS ON LINE
-        case LEFT_ON_LINE;
-          rightMotor.SetPercent(HALF_POWER);
-          leftMotor.SetPercent(FULL_POWER);
-          break;
-
-        //TURNS RIGHT IF RIGHT TWO ARE ON LINE
-        case LEFT_ON_LINE;
-          rightMotor.SetPercent(FULL_POWER);
-          leftMotor.SetPercent(HALF_POWER);
-          break;
-
-        default:
-          break;
-      }
-  }
+    l = leftOpto.Value();
+    c = middleOpto.Value();
+    r = rightOpto.Value();
+    //write values to screen
+    LCD.Write("Right");
+    LCD.WriteLine(r);
+    LCD.Write("Center");
+    LCD.WriteLine(c);
+    LCD.Write("Left");
+    LCD.WriteLine(l);
+    //if statements to check for on left
+    if ( l < ON && c < ON && r > ON ){
+      rightMotor.SetPercent(10);
+      leftMotor.SetPercent(75);
+      Sleep( 150 );
+      prev = LEFT_ON_LINE;
+    }//end left check
+    
+    //check if robot is on middle
+    else if ( l < ON && c > ON && r < ON ){
+      rightMotor.SetPercent(75);
+      leftMotor.SetPercent(75);
+      Sleep( 150 );
+      prev = ON_LINE;
+    }//END MIDDLE CHECK
+    
+    //CHECK IF TO THE RIGHT
+    else if ( l > ON && c < ON && r < ON){
+      rightMotor.SetPercent(75);
+      leftMotor.SetPercent(10);
+      Sleep( 150 );
+      prev = ON_LINE;
+    }//END RIGHT CHECK
+    
+    //else error statement
+    else {
+      LCD.Write("Error.\n")
+    }
+    
+   
 }
 
 
