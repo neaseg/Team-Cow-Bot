@@ -14,8 +14,11 @@ AnalogInputPin cdscell(FEHIO::P1_0);
 
 void start_light()
 {
+//defines percent difference for start light 
 define PERCENT_DIFFERENCE 10;
 float ambientBaseLine = 0;
+for( int i = 0; i < 5; i++){
+
 for 
 while (!buttons.MiddlePressed())
 {
