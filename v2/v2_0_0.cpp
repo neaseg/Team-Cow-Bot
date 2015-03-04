@@ -12,7 +12,7 @@ FEHMotor left_motor(FEHMotor::Motor1);
 FEHServo servo(FEHServo::Servo7);
 AnalogInputPin cdscell(FEHIO::P1_0);
 
-void start_light_2(){
+void start_light(){
 
     //defines percent difference for start light
     #define TARGET_DIFF 15
@@ -51,25 +51,6 @@ void start_light_2(){
     LCD.WriteLine("START LIGHT DETECTED");
 }
 
-
-void start_light()
-{
-
-while (!buttons.MiddlePressed())
-{
-}
-Sleep(1000);
-while (cdscell.Value() > 0.50) //while the cds value shows there is no light on
-{
-LCD.Clear();
-LCD.WriteLine("WAITING FOR START LIGHT");
-LCD.WriteLine("CURRENT CDS VALUE: " );
-LCD.Write(cdscell.Value());
-}
-LCD.Clear();
-LCD.WriteLine("START LIGHT DETECTED");
-Sleep(1000);
-}
 void move_forward(float inches, int percent) //using encoders
 {
     //Reset encoder counts
@@ -219,10 +200,28 @@ void climb_ramp()
 }
 int main(void)
 {
-    start_light_2();
-    move_to_Ramp();
-    climb_ramp();
-    move_forward(15,12.5);
+    /* MOVEMENTS BY INDEX
+    0 Start Light.
+    1 Forward 11 inches at 25 percent power.
+    2 Turn Left 185 at 25 percent power.
+    3 Forward 11 inches at 25 percent power.
+    4 Turn Left 185 at 25 percent power.
+    5 Forward 8 inches at 25 percent  power.
+    6 Forward 25 inches at 50 percent power (climbing ramp).
+    7 Forward 15 inches at 12.5 percent power ( moving to crank).
+    8 ...
+    */
+    
+    #define NUMBER_OF_OPERATIONS 8
+    char operationsArray[] = { 's', 'f', 'l', 'f', 'l', 'f', 'f' };
+    float paramOneArray[] = { 0, 11, 185, 11, 185, 8, 25, 15 };
+    float paramTwoArray[] = { 0, 25, 25, 25, 25, 25, 50, 12.5};
+    
+    for(int i = 0; i < NUMBER_OF_OPERATIONS; i++){
+        //Switch case will go here
+    }
+    
+
 
 return 0;
 }
