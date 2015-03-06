@@ -218,7 +218,40 @@ int main(void)
     float paramTwoArray[] = { 0, 25, 25, 25, 25, 25, 50, 12.5};
     
     for(int i = 0; i < NUMBER_OF_OPERATIONS; i++){
-        //Switch case will go here
+        
+        switch ( operationsArray[i] ){
+            
+            case s:
+                start_light();
+                break;
+                
+            case f:
+                move_forward(paramOneArray[i], paramTwoArray[i]);
+                break;
+                
+            case b:
+                move_backward(paramOneArray[i], paramTwoArray[i]);
+                break;
+                
+            case l:
+                turn_left(paramOneArray[i], paramTwoArray[i]);
+                break;
+                
+            case r:
+                turn_right(paramOneArray[i], paramTwoArray[i]);
+                break;
+                
+            case p:
+                push_buttons();
+                break;
+                
+            case t:
+                toggle_switch();
+                break;
+                
+            defualt:
+                break;
+        }
     }
     
 
