@@ -1,0 +1,58 @@
+#include <FEHLCD.h>
+#include <FEHIO.h>
+#include <FEHUtility.h>
+#include <FEHMotor.h>
+#include <FEHRPS.h>
+#include <FEHServo.h>
+ButtonBoard buttons(FEHIO::Bank3);
+DigitalEncoder right_encoder(FEHIO::P0_2);
+DigitalEncoder left_encoder(FEHIO::P0_0);
+FEHMotor right_motor(FEHMotor::Motor0);
+FEHMotor left_motor(FEHMotor::Motor1);
+FEHServo liftServo(FEHServo::Servo7);\
+FEHServo crankServo(FEHServo::Servo4);
+AnalogInputPin cdscell(FEHIO::P2_7);
+
+
+void turn_right(int percent, int degrees) //using encoders
+{
+    float counts = 210/90.0 * degrees;
+    //Reset encoder counts
+    right_encoder.ResetCounts();
+    left_encoder.ResetCounts();
+    //Set both motors to desired percent
+    //hint: set right motor forward, left motor backward
+    right_motor.SetPercent(-percent);
+    left_motor.SetPercent(-percent);
+    //While the average of the left and right encoder are less than counts,
+    //keep running motors
+    while ((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
+    //Turn off motors
+    right_motor.Stop();
+    left_motor.Stop();
+}
+void turn_left(int percent, int degrees) //using encoders
+{
+    float counts = 210/90.0 * degrees;
+    //Reset encoder counts
+    right_encoder.ResetCounts();
+    left_encoder.ResetCounts();
+    //Set both motors to desired percent
+    //hint: set right motor forward, left motor backward
+    right_motor.SetPercent(percent);
+    left_motor.SetPercent(percent);
+    //While the average of the left and right encoder are less than counts,
+    //keep running motors
+    while ((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
+    //Turn off motors
+    right_motor.Stop();
+    left_motor.Stop();
+}
+
+int main(void)
+{
+turn_left(25,90);
+Sleep(10000);
+run_right(25,90);
+return 0;
+}
