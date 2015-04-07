@@ -22,42 +22,24 @@ FEHServo crankServo(FEHServo::Servo4);
 AnalogInputPin cdscell(FEHIO::P0_0);
 
 //CAN GAIN ONE SECOND BY TAKING DIRECT SAMPLE
+//EVERYTHING UNNECESSARY HAS BEEN TAKEN OUT
 void start_light_2(){
 
     //defines percent difference for start light
     #define TARGET_DIFF 30
     #define LIGHT_SAMPLES 5
     float percentDiff;
-    int i;
-    float ambientLightSum = 0;
-    float ambientLightAvg = 0;
+    float ambientLight = 0;
     float currentLight = 0;
 
-    //Gets avg ambient light avetrage over approximately one seccond.
-    for( int i = 0; i < 5; i++){
-        ambientLightSum += cdscell.Value();
-        Sleep(100);
-    }
-    ambientLightAvg = ambientLightSum / LIGHT_SAMPLES;
-
-
+    //STRAIGHT READS IN THE FLIPPIN LIGHT
+    ambientLight = cdscell.Value();
 
     //Reads until cdscell.Value()  is more than TARGET_DIFF % greater than ambientLightAvg.
     do{
-
         currentLight = cdscell.Value();
-        percentDiff = 100. * (ambientLightAvg - currentLight) / currentLight;
-
-        LCD.Clear();
-        LCD.WriteLine("WAITING FOR START LIGHT");
-        LCD.WriteLine("CURRENT CDS VALUE: " );
-        LCD.Write(currentLight);
+        percentDiff = 100. * (ambientLight - currentLight) / currentLight;
     } while (percentDiff < TARGET_DIFF);
-
-    //Writes success message to screen
-    LCD.Clear();
-    LCD.WriteLine("START LIGHT DETECTED");
-
 }
 
 void check_x_plus(float x_coordinate) //use RPS to check x location while robot is facing the +x direction
@@ -445,16 +427,17 @@ void climb_ramp()
 
 //NEED TO WORK ON THIS
 //FULL POINTS MAY MAKE OR BREAK THE HEAD TO HEAD
+//NOT SURE WHAT'S HAPPENING WHERE
+//REMOVED LIKE 1.5SEC SLEEP
 void hit_pump_switch(){
+    
    move_backwards(36, 30);
    check_y_minus(21.5);
    check_heading(180);
-   Sleep(1000);
-
+//REMOVED SLEEP 1SEC
 
    turn_right(30, 90);
    check_heading(90);
-
 
   // if (RPS.OilDirec() == 1){
    liftServo.SetDegree(165);
@@ -470,68 +453,66 @@ void hit_pump_switch(){
 
 }
 
+//SPEEDING THIS GUY UP
+//OMG WHYYYY DID YOU NOT USE CONSTANTS?? :'(
 void turn_crank1() {
     check_heading(180);
     crankServo.SetMax(2337);
     crankServo.SetMin(517);
     move_forward_time(500, 10);
 
-    bool blue = true;
+    bool blue = false;
 
-    if (cdscell.Value() > .15)
+    if (cdscell.Value() > .15){
         blue = true;
-    else
-        blue = false;
+    }
 
     if (!blue) { // if red
         move_backwards(1, 10);
         check_heading(180);
         crankServo.SetDegree(0); //Set servo at minimum angle
-        Sleep(1250);
+        Sleep(750); //WAS 1250
 
-        //first turn
+        //FIRST TURN
         right_motor.SetPercent(20);
         left_motor.SetPercent(-20);
-        Sleep(1000);
-        right_motor.SetPercent(20); //WORKING VALUE = 30, -30
-        left_motor.SetPercent(-20);
-        crankServo.SetDegree(180); // turn servo motor to maximum angle while slowly moving into wall for 1 second
-        Sleep(1250);
-
-
-        move_backwards(.5, 10);
-        check_heading(180);
-
-        //resetting servo
-        crankServo.SetDegree(0);
-        Sleep(1250); //wait for servo to turn back to angle 0
-
-        //second turn
-        right_motor.SetPercent(20);
-        left_motor.SetPercent(-20);
-        Sleep(1000);
-        right_motor.SetPercent(20);
-        left_motor.SetPercent(-20);
-        crankServo.SetDegree(180); // turn servo motor while slowly moving into wall for 1 second
-        Sleep(1250);
+        Sleep(750); //WAS 1000
+        crankServo.SetDegree(180); //ACTUALLY TURNING CRANK
+        Sleep(750); //WAS 1250
         right_motor.Stop();
         left_motor.Stop();
 
-        move_backwards(.5, 10);
+        //FIRST BACK UP
+        move_backwards(.25, 20); //(.5, 10)
         check_heading(180);
 
-        //resetting servo
+        //RESET SERVO
         crankServo.SetDegree(0);
-        Sleep(1250); //wait for servo to turn back to angle 0
+        Sleep(750); //WAS 1250
 
-        //third turn
+        //SECOND TURN >>SAME VALUES CHANGED<<
         right_motor.SetPercent(20);
         left_motor.SetPercent(-20);
-        Sleep(1000);
+        Sleep(750);
+        crankServo.SetDegree(180); //ACTUALLY TURNING CRANK
+        Sleep(750);
+        right_motor.Stop();
+        left_motor.Stop();
+
+        //SECOND BACK UP >>SAME VALUES CHANGED<<
+        move_backwards(.25, 20);
+        check_heading(180);
+
+        //RESET SERVO >>SAME VALUES CHANGED<<
+        crankServo.SetDegree(0);
+        Sleep(750);
+
+        //THIRD TURN >>SAME VALUES CHANGED<<
         right_motor.SetPercent(20);
         left_motor.SetPercent(-20);
-        crankServo.SetDegree(90); // turn servo motor while slowly moving into wall for 1 second
-        Sleep(1250);
+        Sleep(750);
+        crankServo.SetDegree(90); //ACTUALLY TURNING CRANK
+        Sleep(500);
         right_motor.Stop();
         left_motor.Stop();
     }
@@ -539,75 +520,51 @@ void turn_crank1() {
         move_backwards(1, 10);
         check_heading(180);
         crankServo.SetDegree(180); //Set servo at minimum angle
-        Sleep((1250));
+        Sleep(750); //WAS 1250
 
-        //first turn
+        //FIRST TURN
         right_motor.SetPercent(20);
         left_motor.SetPercent(-20);
-        Sleep(1000);
-        right_motor.SetPercent(20);
-        left_motor.SetPercent(-20);
-        crankServo.SetDegree(0); // turn servo motor to maximum angle while slowly moving into wall for 1 second
-        Sleep(1250);
-
-
-        move_backwards(.5, 10);
-        check_heading(180);
-
-        //resetting servo
-        crankServo.SetDegree(180);
-        Sleep(1250); //wait for servo to turn back to angle 0
-
-        //second turn
-        right_motor.SetPercent(20);
-        left_motor.SetPercent(-20);
-        Sleep(1000);
-        right_motor.SetPercent(20);
-        left_motor.SetPercent(-20);
-        crankServo.SetDegree(0); // turn servo motor while slowly moving into wall for 1 second
-        Sleep(1250);
+        Sleep(750); //WAS 1000
+        crankServo.SetDegree(0); //ACTUALLY TURNING CRANK
+        Sleep(750); //WAS 1250
         right_motor.Stop();
         left_motor.Stop();
 
-
-        move_backwards(.5, 10);
+        //FIRST BACK UP
+        move_backwards(.25, 20); //(.5, 10)
         check_heading(180);
 
-
-        //resetting servo
+        //RESET SERVO
         crankServo.SetDegree(180);
-        Sleep(1250); //wait for servo to turn back to angle 0
+        Sleep(750); //WAS 1250
 
-        //third turn
+        //SECOND TURN >>SAME VALUES CHANGED<<
         right_motor.SetPercent(20);
         left_motor.SetPercent(-20);
-        Sleep(1000);
+        Sleep(750);
+        crankServo.SetDegree(0); //ACTUALLY TURNING CRANK
+        Sleep(750);
+        right_motor.Stop();
+        left_motor.Stop();
+
+        //SECOND BACK UP >>SAME VALUES CHANGED<<
+        move_backwards(.25, 20);
+        check_heading(180);
+
+        //RESET SERVO >>SAME VALUES CHANGED<<
+        crankServo.SetDegree(180);
+        Sleep(750);
+
+        //THIRD TURN >>SAME VALUES CHANGED<<
         right_motor.SetPercent(20);
         left_motor.SetPercent(-20);
-        crankServo.SetDegree(90); // turn servo motor while slowly moving into wall for 1 second
-        Sleep(1250);
+        Sleep(750);
+        crankServo.SetDegree(90); //ACTUALLY TURNING CRANK
+        Sleep(500);
         right_motor.Stop();
         left_motor.Stop();
     }
-}
-
- void calibrate_crank_servo()
-{
-    crankServo.Calibrate();
-
-    crankServo.SetMin(517);
-    crankServo.SetMax(2337);
-
-     for (int i = 140; i >= 0 ; i--) {
-     liftServo.SetDegree(i);
-     LCD.Clear();
-     LCD.WriteLine("SERVO ANGLE IS SET AT:");
-     LCD.Write(i);
-     Sleep(200);
-
-     }
-
-
 }
 
 void calibrate_scoop_servo()
@@ -830,14 +787,14 @@ void mooove_to_crank()
 int main(void)
 {
     RPS.InitializeMenu();
-    start_light_2();
-    move_to_salt();
+    start_light_2(); //turbo
+    move_to_salt(); 
     scoop_salt();
-    climb_ramp();
+    climb_ramp(); //turbo
     move_to_buttons();
-    push_buttons();
+    push_buttons(); //turbo
     deposit_salt();
     mooove_to_crank();
-    turn_crank1();
+    turn_crank1(); //turbo
     hit_pump_switch();
 }
