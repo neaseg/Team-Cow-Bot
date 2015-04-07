@@ -1,3 +1,9 @@
+/*
+*
+*   This version is for the head to head final competition.
+*   Shit is going to go sooooo fast
+*
+*/
 
 #include <FEHLCD.h>
 #include <FEHIO.h>
@@ -15,6 +21,7 @@ FEHServo liftServo(FEHServo::Servo6);\
 FEHServo crankServo(FEHServo::Servo4);
 AnalogInputPin cdscell(FEHIO::P0_0);
 
+//CAN GAIN ONE SECOND BY TAKING DIRECT SAMPLE
 void start_light_2(){
 
     //defines percent difference for start light
@@ -51,26 +58,6 @@ void start_light_2(){
     LCD.Clear();
     LCD.WriteLine("START LIGHT DETECTED");
 
-}
-
-
-void start_light()
-{
-
-while (!buttons.MiddlePressed())
-{
-}
-Sleep(1000);
-while (cdscell.Value() > 0.50) //while the cds value shows there is no light on
-{
-LCD.Clear();
-LCD.WriteLine("WAITING FOR START LIGHT");
-LCD.WriteLine("CURRENT CDS VALUE: " );
-LCD.Write(cdscell.Value());
-}
-LCD.Clear();
-LCD.WriteLine("START LIGHT DETECTED");
-Sleep(1000);
 }
 
 void check_x_plus(float x_coordinate) //use RPS to check x location while robot is facing the +x direction
@@ -372,143 +359,30 @@ void turn_left(int percent, int degrees) //using encoders
     //check_heading(endHeading);
 }
 
-
+//NEW AND IMPROVED!!!
+//SPEED IS CONTROLLED BY A CONSTANT
+//WE'LL MAKE IT FAST AS POSSIBLE
+//CHANGES:
+// 1 - WE AIN'T WRITING SHIT TO THE SCREEN NO MORE
+// 2 - TOOK OUT SOME COMMENTED THINGS
+// 3 - ADDED CONSTANTS
+// 4 - MADE SOME STUFF MOAR PRETTY
+// 5 - REMOVED UNUSED VARIABLES
 void push_buttons()
 {
+    #define sleepRate 10 //PREVIOUS WAS EQUIVALENT TO (sleepRate = 50)
     int redButtonOrder = RPS.RedButtonOrder();
     int whiteButtonOrder = RPS.WhiteButtonOrder();
     int blueButtonOrder = RPS.BlueButtonOrder();
-
-    LCD.Clear();
-    LCD.WriteLine("Red Button Order: ");
-    LCD.WriteLine(redButtonOrder);
-    LCD.WriteLine("White Button Order: ");
-    LCD.WriteLine(whiteButtonOrder);
-    LCD.WriteLine("Blue Button Order: ");
-    LCD.WriteLine(blueButtonOrder);
-    Sleep(1000);
     int angles[3];
+    int currentAngle = 118; //NOT SURE WHERE THIS COMES FROM >> KINDA SCARED
 
     angles[redButtonOrder - 1] =  94;// insert angle of servo to hit red button
     angles[blueButtonOrder - 1] = 120;//
     angles[whiteButtonOrder - 1] = 107;//
-    int currentAngle = 118;
-
-    int buttonsPressed = 0;
-    LCD.Clear();
-
+    
     liftServo.SetMin(500);
     liftServo.SetMax(2500);
-
-   /* TEST
-    liftServo.SetDegree(angles[0]);
-    Sleep(1000);
-
-    liftServo.SetDegree(angles[1]);
-    Sleep(1000);
-    liftServo.SetDegree(angles[2]);
-    LCD.WriteLine("Finished");
-
-    */
-
-
-    //ResetTime();
-    //bool done = false;
-/*    while (30 - TimeNowSec() >= 0 && done == false ) {
-    switch (buttonsPressed){
-
-    case 0:
-        liftServo.SetDegree(angles[0]);
-        Sleep(1000);
-
-         move_backwards_time(1000, 20);
-
-         Sleep(100);
-         move_forward(1,15);
-         check_heading(45);
-
-        if (RPS.RedButtonPressed() == 1) {
-        LCD.WriteLine("RED BUTTON PRESSED");
-        }
-        else if (RPS.BlueButtonPressed() == 1) {
-        LCD.WriteLine("BLUE BUTTON PRESSED");
-        }
-        else if (RPS.WhiteButtonPressed() == 1){
-        LCD.WriteLine("WHITE BUTTON PRESSED");
-        }
-        else
-            LCD.WriteLine("NO BUTTON PRESSED");
-
-        Sleep(1000);
-        move_forward(3, 20);
-        check_heading(45);
-        buttonsPressed++;
-    break;
-
-    case 1:
-        liftServo.SetDegree(angles[1]);
-          move_backwards_time(1000, 20);
-
-
-          Sleep(1000);
-        move_forward(1,15);
-        check_heading(45);
-        if (RPS.RedButtonPressed() == 2) {
-            LCD.WriteLine("RED BUTTON PRESSED");
-        }
-        else if (RPS.BlueButtonPressed() == 2){
-            LCD.WriteLine("BLUE BUTTON PRESSED");
-        }
-        else if (RPS.WhiteButtonPressed() == 2){
-            LCD.WriteLine("WHITE BUTTON PRESSED");
-        }
-        else{
-            LCD.WriteLine("NO BUTTON PRESSED");
-        }
-
-        Sleep(1000);
-        move_forward(3, 20);
-        check_heading(45);
-
-
-            buttonsPressed++;
-        break;
-
-
-    case 2:
-        liftServo.SetDegree(angles[2]);
-
-
-          move_backwards_time(1000, 20);
-
-
-          Sleep(1000);
-          move_forward(1,15);
-          check_heading(45);
-
-
-        if (RPS.RedButtonPressed() == 3)
-            LCD.WriteLine("RED BUTTON PRESSED");
-        else if (RPS.BlueButtonPressed() == 3)
-            LCD.WriteLine("BLUE BUTTON PRESSED");
-        else if (RPS.WhiteButtonPressed() == 3)
-            LCD.WriteLine("WHITE BUTTON PRESSED");
-        else
-            LCD.WriteLine("NO BUTTON PRESSED");
-
-            Sleep(1000);
-
-           // move_forward(3, 20);
-            check_heading(45);
-
-            done = true;
-        break;
-
-    default:
-        LCD.Clear();
-        LCD.Write("YOU DONE MESSED UP A - A RON");
-        }
-        } */
 
     for(int i = 0; i < 3; i++){
 
@@ -516,88 +390,61 @@ void push_buttons()
                if (angles[i] < currentAngle)
             {
                liftServo.SetDegree(currentAngle - 1);
-               Sleep(50);
+               Sleep(sleepRate);
                currentAngle -= 1;
             }
                else
         {
                liftServo.SetDegree(currentAngle + 1);
-               Sleep(50);
+               Sleep(sleepRate);
                currentAngle += 1;
 
     }
     }
-
-        Sleep(1000);
+    //REMOVED 1SEC SLEEP HERE
         ResetTime();
 
-         move_backwards_time(1050, 20); //working value is 1200
-
-      //   Sleep(100);
-         move_forward(3.5,15);
-         check_heading(45);
-
-        if (RPS.RedButtonPressed() == 1) {
-        LCD.WriteLine("RED BUTTON PRESSED");
-        }
-        else if (RPS.BlueButtonPressed() == 1) {
-        LCD.WriteLine("BLUE BUTTON PRESSED");
-        }
-        else if (RPS.WhiteButtonPressed() == 1){
-        LCD.WriteLine("WHITE BUTTON PRESSED");
-        }
-        else
-            LCD.WriteLine("NO BUTTON PRESSED");
-
-        //Sleep(1000);
-        //move_forward(3, 20);
-       // check_heading(45);
+         move_backwards_time(900, 20); //WAS 1050 (going into buttons)
+         move_forward(3, 50); //WAS (3.5, 15) (backing up)
+         check_heading(45); //VERIGYING THAT ALL IS GUCCI
     }
-
-   // move_forward(2, 20);
-    check_heading(45);
-
-    LCD.WriteLine("BUTTONS PRESSED SUCCESSFULLY OR TIME EXPIRED");
-
-    }
-
-
-
-void move_to_Ramp()
-{
-    move_forward(11, 25);
-    Sleep(1000);
-
-    turn_left(25, 90); // actual counts needs to be measure
-    Sleep(1000);
-    move_forward(11, 25);
-    Sleep(1000);
-    turn_left(25, 90);
-    Sleep(1000);
-    move_forward(8, 25);
-    Sleep(1000);
 }
 
+//CHANGES:
+// 1 - REMOVED 5SEC OF SLEEP
+// 2 - MADE MOVEMENTS TWICE AS FAST
+// NOTE: NO RPS CHECKS ARE MADE >> WE SHOULD MEASURE POINTS VIA SLOW CODE AND CHECK HERE
+void move_to_Ramp()
+{
+    move_forward(11, 50); //WAS (11, 25)
+    //REMOVED ONE SECOND SLEEP
+    turn_left(25, 90); // actual counts needs to be measure
+    //REMOVED ONE SECOND SLEEP
+    move_forward(11, 50); //WAS (11, 25)
+    //REMOVED ONE SECOND SLEEP
+    turn_left(25, 90);
+    //REMOVED ONE SECOND SLEEP
+    move_forward(8, 50); //WAS (8, 25)
+    //REMOVED ONE SECOND SLEEP
+}
+
+//CHANGES:
+// 1 - REMOVED UNNESSACARY 'SHIT'
+// 2 - REMOVED A LITTLE SLEEP
+// 3 - SPEED IT UP
 void climb_ramp()
 {
     check_heading(360);
-    LCD.Clear();
-    LCD.WriteLine("ATTEMPTING TO CLIMB RAMP");
-    Sleep(100);
-    LCD.WriteLine("I THINK I CAN, I THINK I CAN...");
+    //REMOVED SLEEP100
     move_backwards(20.5,50);
     check_heading(360);
-    move_backwards(2.5, 25);
+    move_backwards(2.5, 50);//WAS (2.5, 25)
     check_heading(360);
-    LCD.Clear();
-
-    //check_y_plus(50);
-    // check_heading(360);
-
-
 
 }
 
+//NEED TO WORK ON THIS
+//FULL POINTS MAY MAKE OR BREAK THE HEAD TO HEAD
 void hit_pump_switch(){
    move_backwards(36, 30);
    check_y_minus(21.5);
@@ -623,63 +470,15 @@ void hit_pump_switch(){
 
 }
 
-float check_light()  {
-    double crankLightSum = 0;
-    for( int i = 0; i < 10; i++){
-        crankLightSum += cdscell.Value();
-        Sleep(100);
-    }
-
-     double averageLight = crankLightSum / 10;
-
-    return averageLight;
-}
-
-void test_buttons() {
-
-    liftServo.SetMin(500);
-    liftServo.SetMax(2119);
-
-    liftServo.SetDegree(120);
-    Sleep(2000);
-    liftServo.SetDegree(168);
-    Sleep(1000);
-    move_backwards(5, 20);
-    Sleep(3000);
-
-    liftServo.SetDegree(150);
-    Sleep(2000);
-    liftServo.SetDegree(168);
-    Sleep(1000);
-    move_backwards(5, 20);
-    Sleep(3000);
-
-
-    liftServo.SetDegree(135);
-    Sleep(2000);
-    liftServo.SetDegree(168);
-    Sleep(1000);
-    move_backwards(5, 20);
-    Sleep(3000);
-
-
-}
-
 void turn_crank1() {
     check_heading(180);
     crankServo.SetMax(2337);
     crankServo.SetMin(517);
     move_forward_time(500, 10);
-   // Sleep(1000);
-    float lightValue = check_light();
-    LCD.Clear();
-    LCD.WriteLine("LIGHT VALUE =   ");
-    LCD.Write(lightValue);
-   // Sleep(5000);
 
     bool blue = true;
 
-    if (lightValue > .15)
+    if (cdscell.Value() > .15)
         blue = true;
     else
         blue = false;
@@ -790,121 +589,6 @@ void turn_crank1() {
         right_motor.Stop();
         left_motor.Stop();
     }
-}
-
-void turn_crank2()
-{
-    //31, 58.8
-
-    check_heading(360);
-    crankServo.SetMax(2337);
-    crankServo.SetMin(517);
-    crankServo.SetDegree(180);
-   // liftServo.SetDegree(55);
-
-    crankServo.SetDegree(130);
-    turn_left(15, 170);
-    move_forward(5.5, 20);
-   // check_x_plus(32.5);
-    turn_left(10, 10);
-    check_heading(180);
-    // move_backwards(7, 25);
-    move_forward_time(1300, 15);
-    // check_y_minus(56);
-    Sleep(1000);
-    float lightValue = check_light();
-    Sleep(1000);
-    LCD.Clear();
-    LCD.WriteLine(lightValue);
-    move_backwards(3,15);
-
-    bool blue = true;
-
-    if (lightValue > 1.5 )
-blue = true;
-    else
-            blue = false;
-
-
-
-
-
-    //After reading light value, back up to adjust crank turner angle if it needs to be changed
-
-  if (blue != true) {
-      check_heading(180);
-      crankServo.SetDegree(180);
-      Sleep(1500);
-      move_forward(3, 15);
-      check_y_minus(58.8);
-      check_heading(180);
-      Sleep(1500);
-      crankServo.SetDegree(0);
-      Sleep(1500);
-      crankServo.SetDegree(10);
-      Sleep(500);
-      move_backwards(3,15);
-      check_y_minus(55.8);
-
-      check_heading(180);
-      Sleep(1500);
-
-      crankServo.SetDegree(180);
-      Sleep(1500);
-      move_forward(3,15);
-      check_y_minus(58.8);
-      check_heading(180);
-      Sleep(1500);
-      crankServo.SetDegree(0);
-      Sleep(1500);
-      crankServo.SetDegree(10);
-      Sleep(500);
-      move_backwards(3, 15);
-      check_y_minus(55.8);
-      check_heading(180);
-      Sleep(1500);
-      crankServo.SetDegree(180);
-      Sleep(1300);
-      move_forward(3, 15);
-      check_y_minus(58.8);
-      check_heading(180);
-      Sleep(1500);
-      crankServo.SetDegree(0);
-      Sleep(1500);
-      crankServo.SetDegree(10);
-      Sleep(500);
-      move_backwards(3,15);
-      check_y_minus(55.8);
-      check_heading(180);
-      Sleep(1500);
-      }
-  else {
-      check_heading(180);
-      crankServo.SetDegree(20);
-      Sleep(1500);
-      move_forward(3, 15);
-      check_heading(180);
-      Sleep(1500);
-      crankServo.SetDegree(180);
-      Sleep(1500);
-      crankServo.SetDegree(170);
-      Sleep(500);
-      move_backwards(3,15);
-      check_heading(180);
-      Sleep(1500);
-      crankServo.SetDegree(0);
-      Sleep(1500);
-      move_forward(3,15);
-      check_heading(180);
-      Sleep(1500);
-      crankServo.SetDegree(180);
-      Sleep(1500);
-      crankServo.SetDegree(170);
-      Sleep(500);
-      move_backwards(3, 15);
-      check_heading(180);
-      Sleep(1500);
-}
 }
 
  void calibrate_crank_servo()
@@ -1145,106 +829,8 @@ void mooove_to_crank()
 
 int main(void)
 {
-
-/*
-    move_backwards(15, 25);
-    Sleep(1000);
-    move_forward(15,25);
-    Sleep(1000);
-    move_backwards_time(3000, 25);
-    Sleep(1000);
-    move_forward_time(3000, 25);
-*/
-
-   // start_light_2();
-   // move_to_Ramp();
-   // climb_ramp();
-   // move_forward(15,12.5);
-   // calibrate_scoop_servo();
-    //Sleep(10000);
-    //scoop_salt();
-    //push_buttons();
-
-    /*
-   //PERFORMANCE TEST 3
     RPS.InitializeMenu();
-    climb_ramp();
-    turn_left(25, 105);
-    move_backwards(11, 25);
-   push_buttons();
-    */
-
-    /*// RPS heading test
-     RPS.InitializeMenu();
-     while (!buttons.MiddlePressed()){
-     LCD.WriteLine(RPS.Heading());
-     LCD.WriteLine(RPS.X());
-     LCD.WriteLine(RPS.Y());
-     Sleep(250);
-     LCD.Clear();
-     }
-     */
-
-    // PERFORMANCE TEST 4
-    /*
-    liftServo.SetMin(500);
-    liftServo.SetMax(2182);
-    RPS.InitializeMenu();
-    Sleep(1000);
     start_light_2();
-    liftServo.SetDegree(45);
-    move_backwards(12, 25);
-    check_heading(180);
-    turn_left(20, 40);
-    check_heading(220);
-    move_backwards(9, 25);
-    check_heading(220);
-    scoop_salt();
-    climb_ramp();
-    deposit_salt();
-    */
-
-    //PERFORMANCE TEST 5
-   // calibrate_crank_servo();
-
-/*
-    move_forward(20, 25);
-    Sleep(1000);
-    move_backwards(20, 25);
-    Sleep(1000);
-    move_forward(20, 25);
-
-   // RPS.InitializeMenu();
-   // turn_crank();
-
-    liftServo.SetMin(500);
-    liftServo.SetMax(2182);
-
-    RPS.InitializeMenu();
-
-    start_light_2();
-    liftServo.SetDegree(45);
-    move_backwards(12, 23);
-    check_heading(180);
-    turn_left(20, 40);
-    check_heading(220);
-    move_backwards(8, 25);
-    check_heading(220);
-    scoop_salt();
-    climb_ramp();
-    turn_crank();
-    hit_pump_switch();    
- */
-
-    //INDIVIDUAL COMPETITION (FINAL RUN)
-
-//calibrate_scoop_servo();
-
-
-    RPS.InitializeMenu();
-
-    start_light_2();
-    //check_heading(180);
     move_to_salt();
     scoop_salt();
     climb_ramp();
@@ -1252,18 +838,6 @@ int main(void)
     push_buttons();
     deposit_salt();
     mooove_to_crank();
-
     turn_crank1();
-
     hit_pump_switch();
-
-
- //   test_buttons();
-
-   // calibrate_scoop_servo();
-
-
-//scoop_salt();
-
-
 }
