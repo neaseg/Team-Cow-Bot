@@ -692,77 +692,31 @@ void deposit_salt()
     check_heading(90);
 
 
-    //liftServo.SetDegree(100);
     liftServo.SetDegree(123);// drops salt
     liftServo.SetDegree(154);
     move_forward(1.5, 10);
-  //Sleep(1000);
     check_heading(90);
-    liftServo.SetDegree(140);
-    move_backwards(8, 30);// 15
+    liftServo.SetDegree(140); 
+    move_backwards(8, 30);// pushes salt into garage area
     check_x_plus(11);
     check_heading(90);
     liftServo.SetDegree(123);
-    //Sleep(300);took this out
     move_forward(2, 10);
     turn_left(25, 30);
     check_heading(120);
     move_backwards(3, 15);
     liftServo.SetDegree(142);
     Sleep(300);
-    turn_right(20, 60);
-    turn_left(20, 20);//was 40
+    turn_right(20, 60); // turns to fully move salt into garage
+    turn_left(20, 20);
     check_heading(90);
     move_forward(1, 25);
     check_heading(90);
 
 
-    /*
-    int bang = 0;
-    int currentDegree = 155;
-    while (bang < 10)
-{
-        liftServo.SetDegree(currentDegree);
-        turn_right(25, 5);
-        liftServo.SetDegree(currentDegree + 5);
-        turn_left(15, 3);
-        bang++;
-    }
-    /*
-    //check_x_plus(12.5);
-    //move_forward(2.5, 25);
-    turn_left(20, 60);
-    check_heading(90);
-    move_backwards(11.5, 25);
-    int bang = 0;
-    int currentDegree = 155;
-    while (bang < 10)
-{
-        liftServo.SetDegree(currentDegree);
-        turn_right(25, 5);
-        liftServo.SetDegree(currentDegree + 5);
-        turn_left(15, 3);
-        bang++;
-    }
-    liftServo.SetDegree(180);
-    Sleep(500);
-    move_forward(3.5, 10);
-    turn_left(35, 15);
-    check_heading(100);
-    liftServo.SetDegree(170);
-    Sleep(500);
-    move_backwards(5, 25);
-    turn_right(20, 80);
-    move_forward(4, 25);
-    /*turn_right(10, 45);
-    check_heading(45);
-    move_backwards(6, 25);
-    liftServo.SetDegree(140);
-    move_forward(6, 25);
-    */
 }
 
-void mooove_to_crank()
+void move_to_crank()
 {
     move_forward(2, 15); // moving away from garage
     liftServo.SetDegree(100);// lift servo above snow
@@ -801,16 +755,18 @@ void mooove_to_crank()
 int main(void)
 {
 
-
-
-   // start_light_2();
-   // move_to_Ramp();
-   // climb_ramp();
-   // move_forward(15,12.5);
-   // calibrate_scoop_servo();
-    //Sleep(10000);
-    //scoop_salt();
-    //push_buttons();
+    //PERFORMANCE TEST 2
+    
+    /*
+    start_light_2();
+    move_to_Ramp();
+    climb_ramp();
+    move_forward(15,12.5);
+    calibrate_scoop_servo();
+    Sleep(10000);
+    scoop_salt();
+    push_buttons();
+    */
 
     /*
    //PERFORMANCE TEST 3
@@ -843,7 +799,6 @@ int main(void)
     */
 
     //PERFORMANCE TEST 5
-   // calibrate_crank_servo();
 
 /*
     move_forward(20, 25);
